@@ -18,3 +18,9 @@ export const registerUserValidator = [
         })
         .withMessage('Password and confirm password do not match')
 ]
+
+export const loginUserValidator = [
+    body('email').notEmpty().withMessage('Email cannot be empty'),
+    body('email').isEmail().withMessage('Invalid email format'),
+    body('password').notEmpty().withMessage('Password cannot be empty')
+]

@@ -1,5 +1,5 @@
 import { RegisterRequest } from '@/types/user'
-import User from '@/db/models/user.model'
+import User, { UserDocument } from '@/db/models/user.model'
 import logger from '@/libs/logger'
 
 export async function registerService(request: RegisterRequest) {
@@ -14,3 +14,14 @@ export async function registerService(request: RegisterRequest) {
         throw err
     }
 }
+
+export async function validatePassword({ email, password }: { email: string; password: string }): Promise<UserDocument | null> {
+    const user = await User.findOne({ email })
+    if (!user) {
+        return null
+    }
+
+    const isMatch = await user.comparePassword(password)
+    return isMatch ? user : null
+}
+

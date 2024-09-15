@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from 'express'
 import { SuccessResponse } from '@/common/response'
 import authRoute from '@/routes/auth.route'
+import sessionRoute from '@/routes/session.route'
 
 export default (app: Express) => {
     app.get('/health', (req: Request, res: Response) => {
@@ -12,4 +13,5 @@ export default (app: Express) => {
     app.use('/v1', http)
 
     authRoute(http)
+    sessionRoute(http)
 }

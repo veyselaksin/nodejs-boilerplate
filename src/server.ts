@@ -6,6 +6,7 @@ import routes from '@/base.route'
 import bodyParser from 'body-parser'
 import config from 'config'
 import { ErrorResponse } from '@/common/response'
+import { deserializeUser } from '@/middleware/auth'
 
 const app = express()
 const PORT: number = config.get<number>('APP_PORT')
@@ -13,6 +14,7 @@ const PORT: number = config.get<number>('APP_PORT')
 // Body parser
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(deserializeUser)
 
 const srv = app.listen(PORT, async () => {
     logger.info(`Server is running on http://localhost:${PORT}`)
