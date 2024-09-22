@@ -3,7 +3,7 @@ import { Response } from 'express'
 export type BaseResponse<T> = {
     message: string
     success?: boolean
-    data: T
+    data?: T
 }
 
 export const SuccessResponse = <T>(res: Response, { data, message }: BaseResponse<T>, status: number = 200): Response => {
