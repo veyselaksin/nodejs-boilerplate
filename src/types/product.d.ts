@@ -22,3 +22,19 @@ export interface CreateProductResponse {
 export interface UpdateProductRequest extends Request {
     body: Partial<ProductDetails> // Assuming fields can be optional for updates
 }
+
+export interface UpdateProductResponse {
+    id: string
+    title: string
+    description: string
+    price: number
+    image: string
+}
+
+export interface GetProductResponse {
+    id: string
+    title: string
+    description: string
+    price: number
+    image: string
+}
