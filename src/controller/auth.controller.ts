@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import logger from '@/libs/logger'
 import { ErrorResponse, SuccessResponse } from '@/common/response'
 import { registerService } from '@/service/auth.service'
-import { RegisterRequest } from '@/types/user'
+import { LoginRequest, RegisterRequest } from '@/types/user'
 import { validatePassword } from '@/service/auth.service'
 import { signJwt } from '@/utils/jwt'
 import { createSessionService } from '@/service/session.service'
@@ -15,11 +15,15 @@ export async function registerController(req: RegisterRequest, res: Response) {
         return SuccessResponse(res, { data: user, message: 'User created successfully' })
     } catch (error) {
         logger.error(error)
-        return ErrorResponse(res, { data: null, message: 'Failed to create user' })
+        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+        if (errorMessage === 'Email already exists') {
+            return ErrorResponse(res, { data: null, message: errorMessage }, 409)
+        }
+        return ErrorResponse(res, { data: null, message: errorMessage }, 400)
     }
 }
 
-export async function loginController(req: Request, res: Response) {
+export async function loginController(req: LoginRequest, res: Response) {
     // validate the user password
     const user = await validatePassword({ email: req.body.email, password: req.body.password })
     if (!user) {

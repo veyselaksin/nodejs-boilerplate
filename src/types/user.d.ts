@@ -8,3 +8,10 @@ export interface RegisterRequest extends Request {
         passwordConfirm: string
     }
 }
+
+export interface LoginRequest extends Request {
+    body: {
+        email: string
+        password: string
+    }
+}

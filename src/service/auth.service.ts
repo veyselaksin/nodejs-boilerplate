@@ -10,8 +10,13 @@ export async function registerService(request: RegisterRequest) {
             password: request.body.password
         })
     } catch (err) {
+        // Check if its a duplicate key error
+        if (err instanceof Error && 'code' in err && (err as any).code === 11000) {
+            logger.error(err)
+            throw new Error('Email already exists')
+        }
         logger.error(err)
-        throw err
+        throw new Error('Failed to register user')
     }
 }
 
